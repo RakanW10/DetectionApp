@@ -15,6 +15,11 @@ import live.rakan.detector.security.JavaDetector;
 
 
 public class MainActivity extends AppCompatActivity {
+    public native String helloWorld();
+
+    static {
+        System.loadLibrary("ndktest");
+    }
     JavaDetector detector;
     TextView textView1;
     Button checkBTN;
@@ -35,23 +40,14 @@ public class MainActivity extends AppCompatActivity {
                  }else {
                      textView1.setText("Root not Detected");
                  }
-
-                 String content = readSystemFile("/proc/self/maps");
-                 if (content.isEmpty()){
-                     Log.d("Content","Empty");
-                 }else {
-                     Log.e("Content",content);
-                     if(content.contains("frida-agent"))
-                        throw new RuntimeException("This is a crash");
-                 }
-
-
+                 readSystemFile("/proc/self/maps");
+                textView1.setText(helloWorld());
             }
         });
 
     }
 
-    private String readSystemFile(String path){
+    private void readSystemFile(String path){
         String content="";
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
@@ -63,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return content;
+        if(content.contains("frida-agent"))
+            throw new RuntimeException("");
     }
 
 
