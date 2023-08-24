@@ -15,11 +15,12 @@ import live.rakan.detector.security.JavaDetector;
 
 
 public class MainActivity extends AppCompatActivity {
-    public native String helloWorld();
-
+    public native void checkFrida();
     static {
         System.loadLibrary("ndktest");
     }
+
+
     JavaDetector detector;
     TextView textView1;
     Button checkBTN;
@@ -40,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
                  }else {
                      textView1.setText("Root not Detected");
                  }
-                 readSystemFile("/proc/self/maps");
-                textView1.setText(helloWorld());
+//                 readSystemFile("/proc/self/maps");
+                checkFrida();
             }
         });
 
@@ -62,7 +63,4 @@ public class MainActivity extends AppCompatActivity {
         if(content.contains("frida-agent"))
             throw new RuntimeException("");
     }
-
-
-
 }
